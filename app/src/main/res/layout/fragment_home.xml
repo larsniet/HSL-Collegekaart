@@ -12,21 +12,20 @@
         android:orientation="vertical"
         tools:ignore="UselessParent">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="Welcome!"
-            android:textSize="30sp" />
-
-        <TextView
-            android:id="@+id/home_page_username"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:paddingTop="8dp"
-            android:text="Please sign in"
-            android:textSize="20sp" />
+        <ImageView
+            android:id="@+id/addCard"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/icon_background"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_plus"
+            app:layout_constraintBottom_toTopOf="@id/buttonGetStarted"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_gravity="center"
+            app:tint="@color/custom_color_background"
+            />
 
     </LinearLayout>
 

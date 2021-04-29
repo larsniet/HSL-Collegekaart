@@ -1,12 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/bottomnav_home"
-        android:enabled="true"
-        android:icon="@drawable/ic_menu_home"
-        android:title="Home"/>
-    <item
-        android:id="@+id/bottomnav_settings"
-        android:enabled="true"
-        android:icon="@drawable/ic_menu_settings"
-        android:title="Instellingen"/>
+    <item android:id="@+id/menu_home"
+        android:title="Collegekaart"
+        android:icon="@drawable/ic_menu_card"
+        />
+    <item android:id="@+id/menu_profile"
+        android:title="Mijn profiel"
+        android:icon="@drawable/ic_menu_user"
+        />
 </menu>

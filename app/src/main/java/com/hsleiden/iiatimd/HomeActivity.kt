@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import com.microsoft.graph.models.User
 import com.microsoft.identity.client.IAuthenticationResult;
@@ -23,8 +24,7 @@ import com.microsoft.identity.client.exception.MsalUiRequiredException;
 import java.util.function.Consumer
 
 
-class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
-    private var mDrawer: DrawerLayout? = null
+class HomeActivity : AppCompatActivity() {
     private var mNavigationView: NavigationView? = null
     private var mHeaderView: View? = null
     private var mIsSignedIn = false
@@ -37,26 +37,29 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-        // Set the toolbar
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(toolbar)
-        mDrawer = findViewById(R.id.drawer_layout)
-
-        // Add the hamburger menu icon
-        val toggle = ActionBarDrawerToggle(
-            this, mDrawer, toolbar,
-            R.string.navigation_drawer_open, R.string.navigation_drawer_close
-        )
-        mDrawer?.addDrawerListener(toggle)
-        toggle.syncState()
-        mNavigationView = findViewById(R.id.nav_view)
+        // Setup for Bottom Navigation
+        findViewById<BottomNavigationView>(R.id.bottom_navigation)
+            .setOnNavigationItemSelectedListener {
+            when (it.itemId) {
+                R.id.menu_home -> {
+                    openHomeFragment(mUserName)
+                    setContent("Collegekaart")
+                    true
+                }
+                R.id.menu_profile -> {
+                    openLoginFragment()
+                    setContent("Mijn profiel")
+                    true
+                }
+                else -> false
+            }
+        }
 
         // Set user name and email
         mHeaderView = mNavigationView?.getHeaderView(0)
         setSignedInState(mIsSignedIn)
 
         // Listen for item select events on menu
-        mNavigationView?.setNavigationItemSelectedListener(this)
         if (savedInstanceState == null) {
             // Load the home fragment by default on startup
             openHomeFragment(mUserName)
@@ -86,6 +89,10 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
     }
 
+    private fun setContent(content: String) {
+        title = content
+    }
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putBoolean(SAVED_IS_SIGNED_IN, mIsSignedIn)
@@ -94,24 +101,26 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         outState.putString(SAVED_USER_TIMEZONE, mUserTimeZone)
     }
 
-    override fun onNavigationItemSelected(@NonNull menuItem: MenuItem): Boolean {
-        // Load the fragment that corresponds to the selected item
-        when (menuItem.itemId) {
-            R.id.nav_home -> openHomeFragment(mUserName)
-            R.id.nav_login -> openLoginFragment()
-            R.id.nav_signin -> signIn()
-            R.id.nav_signout -> signOut()
-        }
-        mDrawer!!.closeDrawer(GravityCompat.START)
-        return true
+
+    // Update the menu and get the user's name and email
+    @SuppressLint("SetTextI18n")
+    private fun setSignedInState(isSignedIn: Boolean) {
+        mIsSignedIn = isSignedIn
     }
 
-    override fun onBackPressed() {
-        if (mDrawer!!.isDrawerOpen(GravityCompat.START)) {
-            mDrawer!!.closeDrawer(GravityCompat.START)
-        } else {
-            super.onBackPressed()
-        }
+    private fun openLoginFragment() {
+        val fragment = LoginFragment.createInstance()
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .commit()
+    }
+
+    // Load the "Home" fragment
+    private fun openHomeFragment(userName: String?) {
+        val fragment = HomeFragment.createInstance(userName)
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .commit()
     }
 
     private fun showProgressBar() {
@@ -128,62 +137,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         container.visibility = View.VISIBLE
     }
 
-    // Update the menu and get the user's name and email
-    @SuppressLint("SetTextI18n")
-    private fun setSignedInState(isSignedIn: Boolean) {
-        mIsSignedIn = isSignedIn
-
-        mNavigationView!!.menu.clear()
-        mNavigationView!!.inflateMenu(R.menu.drawer_menu)
-        val menu = mNavigationView!!.menu
-
-        // Hide/show the Sign in, Calendar, and Sign Out buttons
-        when {
-            isSignedIn -> {
-                menu.removeItem(R.id.nav_signin);
-            }
-            else -> {
-                menu.removeItem(R.id.nav_home);
-                menu.removeItem(R.id.nav_signout);
-            }
-        }
-
-        // Set the user name and email in the nav drawer
-        val userName = mHeaderView!!.findViewById<TextView>(R.id.user_name)
-        val userEmail = mHeaderView!!.findViewById<TextView>(R.id.user_email)
-        when {
-            isSignedIn -> {
-                userName.text = mUserName
-                userEmail.text = mUserEmail
-            }
-            else -> {
-                mUserName = null
-                mUserEmail = null
-                mUserTimeZone = null
-                userName.text = "Please sign in"
-                userEmail.text = ""
-            }
-        }
-    }
-
-    private fun openLoginFragment() {
-        val fragment = LoginFragment.createInstance()
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, fragment)
-            .commit()
-        mNavigationView?.setCheckedItem(R.id.nav_home)
-    }
-
-    // Load the "Home" fragment
-    private fun openHomeFragment(userName: String?) {
-        val fragment = HomeFragment.createInstance(userName)
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, fragment)
-            .commit()
-        mNavigationView?.setCheckedItem(R.id.nav_home)
-    }
-
-    private fun signIn() {
+    public fun signIn() {
         showProgressBar()
         // Attempt silent sign in first
         // if this fails, the callback will handle doing
