@@ -74,7 +74,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun navigateToHomeActivity() {
         startActivity(Intent(applicationContext, HomeActivity::class.java))
-        overridePendingTransition(R.anim.slide_in, R.anim.slide_out)
         finish()
     }
 

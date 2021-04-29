@@ -2,8 +2,11 @@ package com.hsleiden.iiatimd
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
+import android.view.animation.AnimationUtils
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.ProgressBar
@@ -87,8 +90,22 @@ class HomeActivity : AppCompatActivity() {
 
     // Update current page title and icon
     private fun setContent(content: String, icon: Int) {
-        findViewById<ImageView>(R.id.currentPageIcon).setImageDrawable(ContextCompat.getDrawable(applicationContext, icon))
-        findViewById<TextView>(R.id.currentPageTitle).text = content
+
+        val currentPageIcon = findViewById<ImageView>(R.id.currentPageIcon)
+        val currentPageTitle = findViewById<TextView>(R.id.currentPageTitle)
+
+        var animation = AnimationUtils.loadAnimation(this, R.anim.slide_out)
+        currentPageIcon.startAnimation(animation)
+        currentPageTitle.startAnimation(animation)
+        Handler(Looper.getMainLooper()).postDelayed({
+            currentPageTitle.text = content
+            currentPageIcon.setImageDrawable(ContextCompat.getDrawable(applicationContext, icon))
+
+            animation = AnimationUtils.loadAnimation(this, R.anim.slide_in)
+            currentPageIcon.startAnimation(animation)
+            currentPageTitle.startAnimation(animation)
+
+        }, 500)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
