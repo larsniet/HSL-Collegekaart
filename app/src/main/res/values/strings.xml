@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">IIATIMD</string>
-    <string name="aan_de_slag">Aan de slag</string>
+    <string name="aan_de_slag">Nu Inloggen</string>
+    <string name="overslaan">Overslaan</string>
 </resources>
