@@ -3,17 +3,13 @@ package com.hsleiden.iiatimd
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
-import android.view.MenuItem
 import android.view.View
 import android.widget.FrameLayout
+import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.annotation.NonNull
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
-import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
+import androidx.core.content.ContextCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import com.microsoft.graph.models.User
@@ -43,12 +39,12 @@ class HomeActivity : AppCompatActivity() {
             when (it.itemId) {
                 R.id.menu_home -> {
                     openHomeFragment(mUserName)
-                    setContent("Collegekaart")
+                    setContent("Collegekaart", R.drawable.ic_menu_card)
                     true
                 }
                 R.id.menu_profile -> {
                     openLoginFragment()
-                    setContent("Mijn profiel")
+                    setContent("Mijn profiel", R.drawable.ic_menu_user)
                     true
                 }
                 else -> false
@@ -89,8 +85,10 @@ class HomeActivity : AppCompatActivity() {
             }
     }
 
-    private fun setContent(content: String) {
-        title = content
+    // Update current page title and icon
+    private fun setContent(content: String, icon: Int) {
+        findViewById<ImageView>(R.id.currentPageIcon).setImageDrawable(ContextCompat.getDrawable(applicationContext, icon))
+        findViewById<TextView>(R.id.currentPageTitle).text = content
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
