@@ -9,8 +9,8 @@
     <color name="white">#FFFFFFFF</color>
 
     <!--    Custom Colors   -->
-    <color name="custom_color_primary">#643ae7</color>
-    <color name="custom_color_secondary">#ff8f00</color>
+    <color name="custom_color_primary">#20164a</color>
+    <color name="custom_color_secondary">#00adad</color>
     <color name="custom_color_secondary_light">#ffd299</color>
     <color name="custom_color_background">#ffffff</color>
     <color name="custom_color_text_primary">#060906</color>

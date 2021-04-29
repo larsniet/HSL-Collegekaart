@@ -1,4 +1,4 @@
-package com.example.dinnerwalksandroid
+package com.hsleiden.iiatimd
 
 data class OnboardingItem(
     val onboardingImage: Int,

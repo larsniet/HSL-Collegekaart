@@ -1,4 +1,4 @@
-package com.example.dinnerwalksandroid
+package com.hsleiden.iiatimd
 
 import android.view.LayoutInflater
 import android.view.View

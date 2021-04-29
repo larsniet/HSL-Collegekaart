@@ -1,4 +1,4 @@
-package com.example.dinnerwalksandroid
+package com.example.iiatimd
 
 import org.junit.Test
 
