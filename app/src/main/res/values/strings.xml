@@ -2,4 +2,7 @@
     <string name="app_name">IIATIMD</string>
     <string name="aan_de_slag">Nu Inloggen</string>
     <string name="overslaan">Overslaan</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>
