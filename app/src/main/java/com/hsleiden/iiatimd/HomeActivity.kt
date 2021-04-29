@@ -98,8 +98,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Load the fragment that corresponds to the selected item
         when (menuItem.itemId) {
             R.id.nav_home -> openHomeFragment(mUserName)
-            R.id.nav_calendar -> openCalendarFragment(mUserTimeZone!!)
-            R.id.nav_create_event -> openNewEventFragment(mUserTimeZone!!)
+            R.id.nav_login -> openLoginFragment()
             R.id.nav_signin -> signIn()
             R.id.nav_signout -> signOut()
         }
@@ -133,6 +132,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     @SuppressLint("SetTextI18n")
     private fun setSignedInState(isSignedIn: Boolean) {
         mIsSignedIn = isSignedIn
+
         mNavigationView!!.menu.clear()
         mNavigationView!!.inflateMenu(R.menu.drawer_menu)
         val menu = mNavigationView!!.menu
@@ -144,8 +144,6 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             else -> {
                 menu.removeItem(R.id.nav_home);
-                menu.removeItem(R.id.nav_calendar);
-                menu.removeItem(R.id.nav_create_event);
                 menu.removeItem(R.id.nav_signout);
             }
         }
@@ -155,7 +153,6 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val userEmail = mHeaderView!!.findViewById<TextView>(R.id.user_email)
         when {
             isSignedIn -> {
-                // For testing
                 userName.text = mUserName
                 userEmail.text = mUserEmail
             }
@@ -169,6 +166,14 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
+    private fun openLoginFragment() {
+        val fragment = LoginFragment.createInstance()
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .commit()
+        mNavigationView?.setCheckedItem(R.id.nav_home)
+    }
+
     // Load the "Home" fragment
     private fun openHomeFragment(userName: String?) {
         val fragment = HomeFragment.createInstance(userName)
@@ -176,24 +181,6 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             .replace(R.id.fragment_container, fragment)
             .commit()
         mNavigationView?.setCheckedItem(R.id.nav_home)
-    }
-
-    // Load the "Calendar" fragment
-    private fun openCalendarFragment(timeZone: String) {
-        val fragment = CalendarFragment.createInstance(timeZone)
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, fragment)
-            .commit()
-        mNavigationView?.setCheckedItem(R.id.nav_calendar)
-    }
-
-    // Load the "New Event" fragment
-    private fun openNewEventFragment(timeZone: String) {
-        val fragment = NewEventFragment.createInstance(timeZone)
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, fragment)
-            .commit()
-        mNavigationView?.setCheckedItem(R.id.nav_create_event)
     }
 
     private fun signIn() {

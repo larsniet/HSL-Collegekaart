@@ -12,22 +12,22 @@
         android:orientation="vertical"
         tools:ignore="UselessParent">
 
-        <TextView
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="Welcome!"
-            android:textSize="30sp" />
-
-        <TextView
-            android:id="@+id/home_page_username"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:paddingTop="8dp"
-            android:text="Please sign in"
-            android:textSize="20sp" />
-
+            android:paddingStart="40dp"
+            android:paddingEnd="40dp"
+            android:text="@string/aan_de_slag"
+            android:textAllCaps="false"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:backgroundTint="@color/custom_color_secondary"
+            app:cornerRadius="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            />
     </LinearLayout>
 
 </RelativeLayout>

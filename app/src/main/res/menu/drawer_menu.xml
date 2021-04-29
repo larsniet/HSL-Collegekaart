@@ -3,24 +3,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="single">
+    <group android:checkableBehavior="single" android:id="@+id/nav_menu">
         <item
             android:id="@+id/nav_home"
+            android:enabled="true"
             android:icon="@drawable/ic_menu_home"
             android:title="Home" />
 
         <item
-            android:id="@+id/nav_calendar"
-            android:icon="@drawable/ic_menu_calendar"
-            android:title="Calendar" />
-
-        <item
-            android:id="@+id/nav_create_event"
-            android:icon="@drawable/ic_menu_add_event"
-            android:title="New Event" />
+            android:id="@+id/nav_login"
+            android:enabled="true"
+            android:icon="@drawable/ic_menu_signin"
+            android:title="Loginn" />
 
         <item
             android:id="@+id/nav_signout"
+            android:enabled="true"
             android:icon="@drawable/ic_menu_signout"
             android:title="Sign Out" />
 
