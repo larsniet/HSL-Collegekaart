@@ -14,18 +14,42 @@ import androidx.fragment.app.Fragment;
 
 public class HomeFragment extends Fragment {
 
-    public HomeFragment() {
+    private static final String USER_NAME = "userName";
+    private static final String USER_BIRTHDAY = "userBirthday";
+    private static final String USER_EDUCATION = "userEducation";
+    private static final String USER_VALID = "userValid";
+    private static final String USER_STNUMBER = "userStNumber";
 
-    }
+    private String mUserName;
+    private String mUserBirthday;
+    private String mUserEducation;
+    private String mUserValid;
+    private String mUserStNumber;
 
-    public static HomeFragment createInstance() {
+    public static HomeFragment createInstance(String userName, String userBirthday, String userEducation, String userValid, String userStNumber) {
         HomeFragment fragment = new HomeFragment();
+
+        // Add the provided username to the fragment's arguments
+        Bundle args = new Bundle();
+        args.putString(USER_NAME, userName);
+        args.putString(USER_BIRTHDAY, userBirthday);
+        args.putString(USER_EDUCATION, userEducation);
+        args.putString(USER_VALID, userValid);
+        args.putString(USER_STNUMBER, userStNumber);
+        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mUserName = getArguments().getString(USER_NAME);
+            mUserBirthday = getArguments().getString(USER_BIRTHDAY);
+            mUserEducation = getArguments().getString(USER_EDUCATION);
+            mUserValid = getArguments().getString(USER_VALID);
+            mUserStNumber = getArguments().getString(USER_STNUMBER);
+        }
     }
 
     @Nullable
@@ -33,11 +57,32 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View homeView = inflater.inflate(R.layout.fragment_home, container, false);
 
-        ScaleAnimation scale = new ScaleAnimation(0, 1, 0, 1, ScaleAnimation.RELATIVE_TO_SELF, .5f, ScaleAnimation.RELATIVE_TO_SELF, .5f);
-        scale.setDuration(300);
-        scale.setInterpolator(new OvershootInterpolator());
-        ImageView addCard = homeView.findViewById(R.id.addCard);
-        addCard.startAnimation(scale);
+        ImageView myCardImage = homeView.findViewById(R.id.myCardImage);
+        TextView userName = homeView.findViewById(R.id.userName);
+        TextView userBirthday = homeView.findViewById(R.id.userBirthday);
+        TextView userEducation = homeView.findViewById(R.id.userEducation);
+        TextView userValid = homeView.findViewById(R.id.userValid);
+        TextView userStNumber = homeView.findViewById(R.id.userStNumber);
+
+        userName.setText(mUserName);
+        userBirthday.setText(mUserBirthday);
+        userEducation.setText(mUserEducation);
+        userValid.setText(mUserValid);
+        userStNumber.setText(mUserStNumber);
+
+        ScaleAnimation scaleCard = new ScaleAnimation(0, 1, 0, 1, ScaleAnimation.RELATIVE_TO_SELF, .5f, ScaleAnimation.RELATIVE_TO_SELF, .5f);
+        scaleCard.setDuration(300);
+        scaleCard.setInterpolator(new OvershootInterpolator());
+        myCardImage.startAnimation(scaleCard);
+
+        ScaleAnimation scaleDetails = new ScaleAnimation(0, 1, 0, 1, ScaleAnimation.RELATIVE_TO_SELF, .1f, ScaleAnimation.RELATIVE_TO_SELF, .1f);
+        scaleDetails.setDuration(300);
+        scaleDetails.setInterpolator(new OvershootInterpolator());
+        userName.startAnimation(scaleDetails);
+        userBirthday.startAnimation(scaleDetails);
+        userEducation.startAnimation(scaleDetails);
+        userValid.startAnimation(scaleDetails);
+        userStNumber.startAnimation(scaleDetails);
 
         return homeView;
     }

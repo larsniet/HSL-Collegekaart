@@ -33,7 +33,7 @@ public class GraphHelper implements IAuthenticationProvider {
     public CompletableFuture<User> getUser() {
         // GET /me (logged in user)
         return mClient.me().buildRequest()
-                .select("displayName,mail,mailboxSettings,userPrincipalName,employeeId")
+                .select("displayName,mail,mailboxSettings,userPrincipalName,employeeId,birthday")
                 .getAsync();
     }
 

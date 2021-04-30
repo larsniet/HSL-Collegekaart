@@ -13,6 +13,10 @@ import com.microsoft.identity.client.IAuthenticationResult
 import com.microsoft.identity.client.exception.MsalClientException
 import com.microsoft.identity.client.exception.MsalServiceException
 import com.microsoft.identity.client.exception.MsalUiRequiredException
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 
 class LoginActivity : AppCompatActivity() {
@@ -20,6 +24,9 @@ class LoginActivity : AppCompatActivity() {
     private var mIsSignedIn = false
     private var mUserName: String? = null
     private var mUserEmail: String? = null
+    private var mUserBirthday: String? = null
+    private var mUserEducation: String? = null
+    private var mUserValid: String? = null
     private var mUserStNumber: String? = null
     private var mUserTimeZone: String? = null
     private var mAuthHelper: AuthenticationHelper? = null
@@ -41,6 +48,9 @@ class LoginActivity : AppCompatActivity() {
             mIsSignedIn = sharedPreferences.getBoolean("mIsSignedIn", false)
             mUserName = sharedPreferences.getString("mUserName", "null")
             mUserEmail = sharedPreferences.getString("mUserEmail", "null")
+            mUserBirthday = sharedPreferences.getString("mUserBirthday", "null")
+            mUserEducation = sharedPreferences.getString("mUserEducation", "null")
+            mUserValid = sharedPreferences.getString("mUserValid", "null")
             mUserStNumber = sharedPreferences.getString("mUserStNumber", "null")
             mUserTimeZone = sharedPreferences.getString("mUserTimeZone", "null")
         }
@@ -81,6 +91,9 @@ class LoginActivity : AppCompatActivity() {
                 editor.putString("mUserStNumber", "null")
                 editor.putString("mUserName", "null")
                 editor.putString("mUserEmail", "null")
+                editor.putString("mUserBirthday", "null")
+                editor.putString("mUserEducation", "null")
+                editor.putString("mUserValid", "null")
                 editor.putString("mUserTimeZone", "null")
             }
         }
@@ -155,9 +168,16 @@ class LoginActivity : AppCompatActivity() {
         graphHelper.user
             .thenAccept { user: User ->
                 val editor = sharedPreferences.edit()
-                editor.putString("mUserName", user.displayName)
+                val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+                val lastName: String? = user.displayName?.let { user.displayName!!.substring(0, it.indexOf(",")) }
+                val firstName: String? = user.displayName?.let { user.displayName!!.substring(user.displayName!!.indexOf(",") + 1, user.displayName!!.length) }
+
+                editor.putString("mUserName", "$firstName $lastName")
                 editor.putString("mUserEmail", if (user.mail == null) user.userPrincipalName else user.mail)
                 editor.putString("mUserStNumber", user.employeeId)
+                editor.putString("mUserBirthday", user.birthday?.format(formatter))
+                editor.putString("mUserEducation", user.schools?.get(0).toString())
+                editor.putString("mUserValid", "t/m 31 augustus 2021")
                 editor.putString("mUserTimeZone", user.mailboxSettings?.timeZone)
                 editor.apply()
                 runOnUiThread(fun() {
@@ -172,6 +192,23 @@ class LoginActivity : AppCompatActivity() {
                 }
                 null
             }
+    }
+
+    @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
+    @SuppressLint("SimpleDateFormat")
+    fun getDateFromString(inputDate: String?): String? {
+        val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS")
+        var date: Date? = null
+        try {
+            date = simpleDateFormat.parse(inputDate)
+        } catch (e: ParseException) {
+            e.printStackTrace()
+        }
+        if (date == null) {
+            return ""
+        }
+        val convetDateFormat = SimpleDateFormat("dd-MM-yyyy")
+        return convetDateFormat.format(date)
     }
 
     private fun handleSignInFailure(exception: Throwable?) {

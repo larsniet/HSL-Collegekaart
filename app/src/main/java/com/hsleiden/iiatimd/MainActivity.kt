@@ -1,13 +1,20 @@
 package com.hsleiden.iiatimd
 
+import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.SharedPreferences
+import android.nfc.NfcAdapter
+import android.nfc.NfcAdapter.ACTION_TECH_DISCOVERED
+import android.nfc.Tag
+import android.nfc.tech.IsoDep
 import android.os.Bundle
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView

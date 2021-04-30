@@ -60,7 +60,7 @@ public class ProfileFragment extends Fragment {
         }
 
         buttonLogout.setOnClickListener(v -> {
-            ((HomeActivity) getActivity()).signOut();
+            ((HomeActivity) Objects.requireNonNull(getActivity())).signOut();
         });
 
 
