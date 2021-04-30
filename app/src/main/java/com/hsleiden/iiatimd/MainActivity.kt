@@ -55,25 +55,25 @@ class MainActivity : AppCompatActivity() {
                 setCurrentIndicator(position)
             }
         })
-        (onboardingViewPager.getChildAt(0) as RecyclerView).overScrollMode =
-            RecyclerView.OVER_SCROLL_NEVER
+        (onboardingViewPager.getChildAt(0) as RecyclerView).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
         findViewById<ImageView>(R.id.imageNext).setOnClickListener {
             if (onboardingViewPager.currentItem + 1 < onboardingItemsAdapter.itemCount) {
                 onboardingViewPager.currentItem += 1
             } else {
-                navigateToHomeActivity()
+                navigateToLoginActivity()
             }
         }
         findViewById<TextView>(R.id.textSkip).setOnClickListener {
-            navigateToHomeActivity()
+            navigateToLoginActivity()
         }
-        findViewById<MaterialButton>(R.id.buttonGetStarted).setOnClickListener {
-            navigateToHomeActivity()
+        findViewById<MaterialButton>(R.id.loginWithMicrosoft).setOnClickListener {
+            navigateToLoginActivity()
         }
     }
 
-    private fun navigateToHomeActivity() {
-        startActivity(Intent(applicationContext, HomeActivity::class.java))
+    private fun navigateToLoginActivity() {
+        startActivity(Intent(applicationContext, LoginActivity::class.java))
+        overridePendingTransition(R.anim.page_slide_out, R.anim.page_slide_in)
         finish()
     }
 

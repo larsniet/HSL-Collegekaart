@@ -13,30 +13,19 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 public class HomeFragment extends Fragment {
-    private static final String USER_NAME = "userName";
-
-    private String mUserName;
 
     public HomeFragment() {
 
     }
 
-    public static HomeFragment createInstance(String userName) {
+    public static HomeFragment createInstance() {
         HomeFragment fragment = new HomeFragment();
-
-        // Add the provided username to the fragment's arguments
-//        Bundle args = new Bundle();
-//        args.putString(USER_NAME, userName);
-//        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        if (getArguments() != null) {
-//            mUserName = getArguments().getString(USER_NAME);
-//        }
     }
 
     @Nullable
@@ -49,12 +38,6 @@ public class HomeFragment extends Fragment {
         scale.setInterpolator(new OvershootInterpolator());
         ImageView addCard = homeView.findViewById(R.id.addCard);
         addCard.startAnimation(scale);
-
-        // If there is a username, replace the "Please sign in" with the username
-//        if (mUserName != null) {
-//            TextView userName = homeView.findViewById(R.id.buttonLogin);
-//            userName.setText(mUserName);
-//        }
 
         return homeView;
     }

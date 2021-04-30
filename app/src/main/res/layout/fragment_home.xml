@@ -20,7 +20,7 @@
             android:background="@drawable/icon_background"
             android:contentDescription="@string/app_name"
             android:src="@drawable/ic_plus"
-            app:layout_constraintBottom_toTopOf="@id/buttonGetStarted"
+            app:layout_constraintBottom_toTopOf="@id/loginWithMicrosoft"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_gravity="center"

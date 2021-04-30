@@ -7,39 +7,57 @@
     android:background="@color/custom_color_primary"
     tools:context=".MainActivity">
 
-    <androidx.viewpager2.widget.ViewPager2
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/onboardingViewPager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@drawable/view_pager_background"
         app:layout_constraintBottom_toTopOf="@id/viewCenterOfNext"
         app:layout_constraintTop_toTopOf="parent"
-        />
+        >
 
-    <LinearLayout
-        android:id="@+id/indicatorsContainer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="20dp"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        />
+        <TextView
+            android:id="@+id/textTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Laten we beginnen!"
+            android:textColor="@color/custom_color_text_primary"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/uitleg"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textSkip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="20dp"
-        android:text="@string/overslaan"
-        android:textColor="@color/custom_color_primary"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        <ImageView
+            android:id="@+id/imageOnboarding"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="18dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/login"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/uitleg" />
+
+        <TextView
+            android:id="@+id/uitleg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:maxWidth="300dp"
+            android:text="Om een goed beeld te krijgen van wie jij bent en om te voorkomen dat je iemands identiteit steelt vragen we je in te loggen met je Hogeschool account"
+            android:textColor="@color/custom_color_text_secondary"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/imageOnboarding"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textTitle" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <View
         android:layout_width="55dp"
@@ -68,15 +86,14 @@
         android:layout_marginBottom="50dp"
         android:background="@drawable/icon_background"
         android:contentDescription="@string/app_name"
-        android:src="@drawable/ic_right"
-        app:layout_constraintBottom_toTopOf="@id/loginWithMicrosoft"
+        android:src="@drawable/logo_only"
+        app:layout_constraintBottom_toTopOf="@id/buttonLogin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:tint="@color/custom_color_background"
         />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/loginWithMicrosoft"
+        android:id="@+id/buttonLogin"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:layout_marginBottom="50dp"

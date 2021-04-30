@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -20,26 +21,49 @@
                 android:id="@+id/currentPageIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_menu_card"
                 android:layout_marginStart="35dp"
+                android:contentDescription="Icon"
+                android:src="@drawable/ic_menu_card"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:contentDescription="Icon"
-                app:tint="@color/custom_color_secondary"
-                />
+                app:tint="@color/custom_color_secondary" />
 
             <TextView
                 android:id="@+id/currentPageTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/currentPage"
+                android:layout_marginStart="15dp"
+                android:layout_toEndOf="@+id/currentPageIcon"
                 android:text="Collegekaart"
                 android:textColor="@color/custom_color_secondary"
                 android:textSize="18sp"
-                android:layout_marginStart="15dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/currentPageIcon"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/stNumberIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="Icon"
+                android:src="@drawable/ic_face"
+                android:layout_marginEnd="15dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/userStNumber"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/custom_color_secondary" />
+
+            <TextView
+                android:id="@+id/userStNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1234567"
+                android:textColor="@color/custom_color_secondary"
+                android:textSize="18sp"
+                android:layout_marginEnd="35dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
