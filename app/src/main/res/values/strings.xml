@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">IIATIMD</string>
-    <string name="login_with_microsoft">Inloggen met Microsoft</string>
+    <string name="login_with_microsoft">Gelijk Inloggen</string>
+    <string name="login">Inloggen</string>
     <string name="overslaan">Overslaan</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>

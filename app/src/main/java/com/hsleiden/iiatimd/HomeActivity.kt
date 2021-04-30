@@ -96,7 +96,7 @@ class HomeActivity : AppCompatActivity() {
                 editor.putString("mUserEmail", "null")
                 editor.putString("mUserTimeZone", "null")
                 editor.apply()
-                startActivity(Intent(applicationContext, LoginActivity::class.java))
+                startActivity(Intent(applicationContext, MainActivity::class.java))
                 finish()
             }
         }

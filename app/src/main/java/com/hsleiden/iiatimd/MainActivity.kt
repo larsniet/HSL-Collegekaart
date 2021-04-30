@@ -1,13 +1,14 @@
 package com.hsleiden.iiatimd
 
+import android.content.Context
 import android.content.Intent
-import android.media.Image
-import androidx.appcompat.app.AppCompatActivity
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
@@ -18,8 +19,17 @@ class MainActivity : AppCompatActivity() {
     private lateinit var onboardingItemsAdapter: OnboardingItemsAdapter
     private lateinit var indicatorsContainer: LinearLayout
 
+    private var sharedPrefFile: String = "mUserPreference"
+    private lateinit var sharedPreferences: SharedPreferences
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        sharedPreferences = this.getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
+        if (sharedPreferences.getBoolean("mIsSignedIn", false)) {
+            navigateToLoginActivity(false)
+        }
+
         setContentView(R.layout.activity_main)
         setOnboardingItems()
         setupIndicators()
@@ -28,28 +38,28 @@ class MainActivity : AppCompatActivity() {
 
     private fun setOnboardingItems() {
         onboardingItemsAdapter = OnboardingItemsAdapter(
-            listOf(
-                OnboardingItem(
-                    onboardingImage = R.drawable.card,
-                    title = "Collegekaart synchroniseren",
-                    description = "Door simpelweg je collegekaart tegen je telefoon aan te houden kan je hem gemakkelijk aan je account toevoegen."
-                ),
-                OnboardingItem(
-                    onboardingImage = R.drawable.mobile_login,
-                    title = "Hogeschool account koppelen",
-                    description = "Dit systeem is gekoppeld aan dat van de Hogeschool Leiden, waardoor je slechts met een paar knoppen kan inloggen."
-                ),
-                OnboardingItem(
-                    onboardingImage = R.drawable.secure_server,
-                    title = "Veiligheid is onze prioriteit",
-                    description = "Er worden zo min mogelijk gegevens van jou opgeslagen. Wat we wel moeten opslaan, wordt goed versleuteld."
-                ),
-            )
+                listOf(
+                        OnboardingItem(
+                                onboardingImage = R.drawable.card,
+                                title = "Collegekaart synchroniseren",
+                                description = "Door simpelweg je collegekaart tegen je telefoon aan te houden kan je hem gemakkelijk aan je account toevoegen."
+                        ),
+                        OnboardingItem(
+                                onboardingImage = R.drawable.mobile_login,
+                                title = "Hogeschool account koppelen",
+                                description = "Dit systeem is gekoppeld aan dat van de Hogeschool Leiden, waardoor je slechts met een paar knoppen kan inloggen."
+                        ),
+                        OnboardingItem(
+                                onboardingImage = R.drawable.secure_server,
+                                title = "Veiligheid is onze prioriteit",
+                                description = "Er worden zo min mogelijk gegevens van jou opgeslagen. Wat we wel moeten opslaan, wordt goed versleuteld."
+                        ),
+                )
         )
         val onboardingViewPager = findViewById<ViewPager2>(R.id.onboardingViewPager)
         onboardingViewPager.adapter = onboardingItemsAdapter
         onboardingViewPager.registerOnPageChangeCallback(object :
-            ViewPager2.OnPageChangeCallback() {
+                ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 setCurrentIndicator(position)
@@ -60,19 +70,21 @@ class MainActivity : AppCompatActivity() {
             if (onboardingViewPager.currentItem + 1 < onboardingItemsAdapter.itemCount) {
                 onboardingViewPager.currentItem += 1
             } else {
-                navigateToLoginActivity()
+                navigateToLoginActivity(false)
             }
         }
         findViewById<TextView>(R.id.textSkip).setOnClickListener {
-            navigateToLoginActivity()
+            navigateToLoginActivity(false)
         }
         findViewById<MaterialButton>(R.id.loginWithMicrosoft).setOnClickListener {
-            navigateToLoginActivity()
+            navigateToLoginActivity(true)
         }
     }
 
-    private fun navigateToLoginActivity() {
-        startActivity(Intent(applicationContext, LoginActivity::class.java))
+    private fun navigateToLoginActivity(startSignInProcess: Boolean) {
+        val i = Intent(applicationContext, LoginActivity::class.java)
+        i.putExtra("startSignInProcess", startSignInProcess)
+        startActivity(i)
         overridePendingTransition(R.anim.page_slide_out, R.anim.page_slide_in)
         finish()
     }
@@ -86,10 +98,10 @@ class MainActivity : AppCompatActivity() {
             indicators[i] = ImageView(applicationContext)
             indicators[i]?.let {
                 it.setImageDrawable(
-                    ContextCompat.getDrawable(
-                        applicationContext,
-                        R.drawable.indicator_inactive_background
-                    )
+                        ContextCompat.getDrawable(
+                                applicationContext,
+                                R.drawable.indicator_inactive_background
+                        )
                 )
                 it.layoutParams = layoutParams
                 indicatorsContainer.addView(it)
@@ -103,17 +115,17 @@ class MainActivity : AppCompatActivity() {
             val imageView = indicatorsContainer.getChildAt(i) as ImageView
             if (i == position) {
                 imageView.setImageDrawable(
-                    ContextCompat.getDrawable(
-                        applicationContext,
-                        R.drawable.indicator_active_background
-                    )
+                        ContextCompat.getDrawable(
+                                applicationContext,
+                                R.drawable.indicator_active_background
+                        )
                 )
             } else {
                 imageView.setImageDrawable(
-                    ContextCompat.getDrawable(
-                        applicationContext,
-                        R.drawable.indicator_inactive_background
-                    )
+                        ContextCompat.getDrawable(
+                                applicationContext,
+                                R.drawable.indicator_inactive_background
+                        )
                 )
             }
         }

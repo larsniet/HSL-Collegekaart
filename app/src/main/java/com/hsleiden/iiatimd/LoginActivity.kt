@@ -5,20 +5,14 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
-import android.view.View
-import android.view.animation.AnimationUtils
-import android.widget.*
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.microsoft.graph.models.User
-import com.microsoft.identity.client.IAuthenticationResult;
-import com.microsoft.identity.client.exception.MsalClientException;
-import com.microsoft.identity.client.exception.MsalServiceException;
-import com.microsoft.identity.client.exception.MsalUiRequiredException;
+import com.microsoft.identity.client.IAuthenticationResult
+import com.microsoft.identity.client.exception.MsalClientException
+import com.microsoft.identity.client.exception.MsalServiceException
+import com.microsoft.identity.client.exception.MsalUiRequiredException
 
 
 class LoginActivity : AppCompatActivity() {
@@ -58,7 +52,12 @@ class LoginActivity : AppCompatActivity() {
             .thenAccept { authHelper: AuthenticationHelper ->
                 mAuthHelper = authHelper
                 if (!mIsSignedIn) {
-                    doSilentSignIn(false)
+                    // Check if the SignIn Process has to instantly start
+                    if (intent.getBooleanExtra("startSignInProcess", false)) {
+                        doSilentSignIn(true)
+                    } else {
+                        doSilentSignIn(false)
+                    }
                 }
             }
             .exceptionally { exception: Throwable? ->
@@ -89,14 +88,15 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun startHomeActivity() {
-        startActivity(Intent(applicationContext, HomeActivity::class.java))
-        finish()
+        // Double check if user is logged in
+        if (sharedPreferences.getBoolean("mIsSignedIn", false)) {
+            startActivity(Intent(applicationContext, HomeActivity::class.java))
+            finish()
+        }
     }
 
     private fun signIn() {
-        // Attempt silent sign in first
-        // if this fails, the callback will handle doing
-        // interactive sign in
+        // Attempt silent sign in first, if this fails, the callback will handle doing interactive sign in
         doSilentSignIn(true)
     }
 
@@ -106,7 +106,7 @@ class LoginActivity : AppCompatActivity() {
         mAuthHelper!!.acquireTokenSilently()
             .thenAccept { authenticationResult: IAuthenticationResult ->
                 handleSignInSuccess(
-                    authenticationResult
+                        authenticationResult
                 )
             }
             .exceptionally { exception: Throwable ->
@@ -122,8 +122,6 @@ class LoginActivity : AppCompatActivity() {
                     ) {
                         Log.d("AUTH", "No current account, interactive login required")
                         if (shouldAttemptInteractive) doInteractiveSignIn()
-                        // GoToHome
-//                        startHomeActivity()
                     }
                 } else {
                     handleSignInFailure(cause)
@@ -137,7 +135,7 @@ class LoginActivity : AppCompatActivity() {
         mAuthHelper!!.acquireTokenInteractively(this)
             .thenAccept { authenticationResult: IAuthenticationResult ->
                 handleSignInSuccess(
-                    authenticationResult
+                        authenticationResult
                 )
             }
             .exceptionally { exception: Throwable? ->
@@ -158,7 +156,7 @@ class LoginActivity : AppCompatActivity() {
             .thenAccept { user: User ->
                 val editor = sharedPreferences.edit()
                 editor.putString("mUserName", user.displayName)
-                editor.putString("mUserEmail",  if (user.mail == null) user.userPrincipalName else user.mail)
+                editor.putString("mUserEmail", if (user.mail == null) user.userPrincipalName else user.mail)
                 editor.putString("mUserStNumber", user.employeeId)
                 editor.putString("mUserTimeZone", user.mailboxSettings?.timeZone)
                 editor.apply()
