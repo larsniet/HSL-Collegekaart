@@ -2,6 +2,7 @@ package com.hsleiden.iiatimd;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
 import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,6 +26,9 @@ import com.google.zxing.oned.Code128Writer;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
 import java.util.Hashtable;
+import java.util.Objects;
+
+import me.virtualiz.blurshadowimageview.BlurShadowImageView;
 
 public class HomeFragment extends Fragment {
 
@@ -32,6 +37,10 @@ public class HomeFragment extends Fragment {
     private static final String USER_EDUCATION = "userEducation";
     private static final String USER_VALID = "userValid";
     private static final String USER_STNUMBER = "userStNumber";
+
+    Hashtable<EncodeHintType, ErrorCorrectionLevel> hintMap = new Hashtable<>();
+    Writer codeWriter = new Code128Writer();
+    BitMatrix byteMatrix = null;
 
     private String mUserName;
     private String mUserBirthday;
@@ -70,7 +79,9 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View homeView = inflater.inflate(R.layout.fragment_home, container, false);
 
-        ImageView myCardImage = homeView.findViewById(R.id.myCardImage);
+        // Setup
+        RelativeLayout cardLayout = homeView.findViewById(R.id.cardLayout);
+        BlurShadowImageView myCardImage = homeView.findViewById(R.id.myCardImage);
         ImageView myBarcode = homeView.findViewById(R.id.myBarcode);
         TextView userName = homeView.findViewById(R.id.userName);
         TextView userBirthday = homeView.findViewById(R.id.userBirthday);
@@ -78,17 +89,20 @@ public class HomeFragment extends Fragment {
         TextView userValid = homeView.findViewById(R.id.userValid);
         TextView userStNumber = homeView.findViewById(R.id.userStNumber);
 
+        // Details setters
         userName.setText(mUserName);
         userBirthday.setText(mUserBirthday);
         userEducation.setText(mUserEducation);
         userValid.setText(mUserValid);
         userStNumber.setText(mUserStNumber);
 
+        // Animations for the cardImage
         ScaleAnimation scaleCard = new ScaleAnimation(0, 1, 0, 1, ScaleAnimation.RELATIVE_TO_SELF, .5f, ScaleAnimation.RELATIVE_TO_SELF, .5f);
         scaleCard.setDuration(300);
         scaleCard.setInterpolator(new OvershootInterpolator());
         myCardImage.startAnimation(scaleCard);
 
+        // Animations for the card details
         ScaleAnimation scaleDetails = new ScaleAnimation(0, 1, 0, 1, ScaleAnimation.RELATIVE_TO_SELF, .1f, ScaleAnimation.RELATIVE_TO_SELF, .1f);
         scaleDetails.setDuration(300);
         scaleDetails.setInterpolator(new OvershootInterpolator());
@@ -97,14 +111,12 @@ public class HomeFragment extends Fragment {
         userEducation.startAnimation(scaleDetails);
         userValid.startAnimation(scaleDetails);
         userStNumber.startAnimation(scaleDetails);
+        myBarcode.startAnimation(scaleDetails);
 
-        Hashtable<EncodeHintType, ErrorCorrectionLevel> hintMap = new Hashtable<>();
+        // Code for creating and placing barcode
         hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
-        Writer codeWriter;
-        codeWriter = new Code128Writer();
-        BitMatrix byteMatrix = null;
         try {
-            byteMatrix = codeWriter.encode(mUserStNumber, BarcodeFormat.CODE_128,800, 150, hintMap);
+            byteMatrix = codeWriter.encode(mUserStNumber, BarcodeFormat.CODE_128,700, 150, hintMap);
         } catch (WriterException e) {
             e.printStackTrace();
         }
