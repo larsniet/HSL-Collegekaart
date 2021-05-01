@@ -1,33 +1,29 @@
 package com.hsleiden.iiatimd
 
 import android.annotation.SuppressLint
-import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.content.SharedPreferences
-import android.nfc.NfcAdapter
-import android.nfc.Tag
-import android.nfc.tech.IsoDep
+import android.graphics.Bitmap
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import com.android.volley.AuthFailureError
-import com.android.volley.RequestQueue
 import com.android.volley.Response
-import com.android.volley.VolleyError
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.zxing.BarcodeFormat
+import com.google.zxing.MultiFormatWriter
+import com.google.zxing.WriterException
 import org.json.JSONObject
-import java.nio.charset.Charset
 import java.util.*
 
 
@@ -77,7 +73,13 @@ class HomeActivity : AppCompatActivity() {
             .setOnNavigationItemSelectedListener {
                 when (it.itemId) {
                     R.id.menu_home -> {
-                        openHomeFragment(mUserName, mUserBirthday, mUserEducation, mUserValid, mUserStNumber)
+                        openHomeFragment(
+                            mUserName,
+                            mUserBirthday,
+                            mUserEducation,
+                            mUserValid,
+                            mUserStNumber
+                        )
                         setContent("Collegekaart", R.drawable.ic_menu_card)
                         true
                     }
@@ -112,6 +114,7 @@ class HomeActivity : AppCompatActivity() {
         when {
             isSignedIn -> {
 //                setJWTAccessToken()
+
             } else -> {
                 editor.putString("mUserStNumber", "null")
                 editor.putString("mUserName", "null")
@@ -128,6 +131,7 @@ class HomeActivity : AppCompatActivity() {
         editor.apply()
     }
 
+
     private fun setJWTAccessToken() {
         // Create Volley queue
         val queue = Volley.newRequestQueue(this)
@@ -139,18 +143,18 @@ class HomeActivity : AppCompatActivity() {
         // Request a string response from the provided URL.
         val loginUserReq : StringRequest =
                 object : StringRequest(Method.POST, loginUserURL,
-                        Response.Listener { response ->
-                            try {
-                                val jsonObject = JSONObject(response)
-                                Log.e("Data: ", jsonObject.toString() )
-                            } catch (e: Exception) {
-                                e.printStackTrace()
-                                Log.e("Error: ", response)
-                            }
-                        },
-                        Response.ErrorListener { error ->
-                            Log.d("API", "error => $error")
+                    Response.Listener { response ->
+                        try {
+                            val jsonObject = JSONObject(response)
+                            Log.e("Data: ", jsonObject.toString())
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                            Log.e("Error: ", response)
                         }
+                    },
+                    Response.ErrorListener { error ->
+                        Log.d("API", "error => $error")
+                    }
                 ){
                     override fun getParams(): Map<String, String> {
                         val params: MutableMap<String, String> = HashMap()
@@ -161,22 +165,22 @@ class HomeActivity : AppCompatActivity() {
                         return params
                     }
                 }
-        queue.add(loginUserReq )
+        queue.add(loginUserReq)
 
         val createUserReq : StringRequest =
                 object : StringRequest(Method.POST, createUserURL,
-                        Response.Listener { response ->
-                            try {
-                                val jsonObject = JSONObject(response)
-                                Log.e("Data: ", jsonObject.toString() )
-                            } catch (e: Exception) {
-                                e.printStackTrace()
-                                Log.e("Error: ", response)
-                            }
-                        },
-                        Response.ErrorListener { error ->
-                            Log.d("API", "error => $error")
+                    Response.Listener { response ->
+                        try {
+                            val jsonObject = JSONObject(response)
+                            Log.e("Data: ", jsonObject.toString())
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                            Log.e("Error: ", response)
                         }
+                    },
+                    Response.ErrorListener { error ->
+                        Log.d("API", "error => $error")
+                    }
                 ){
                     override fun getParams(): Map<String, String> {
                         val params: MutableMap<String, String> = HashMap()
@@ -199,8 +203,20 @@ class HomeActivity : AppCompatActivity() {
     }
 
     // Load the "Home" fragment
-    private fun openHomeFragment(userName: String?, userBirthday: String?, userEducation: String?, userValid: String?, userStNumber: String?) {
-        val fragment = HomeFragment.createInstance(userName, userBirthday, userEducation, userValid, userStNumber)
+    private fun openHomeFragment(
+        userName: String?,
+        userBirthday: String?,
+        userEducation: String?,
+        userValid: String?,
+        userStNumber: String?
+    ) {
+        val fragment = HomeFragment.createInstance(
+            userName,
+            userBirthday,
+            userEducation,
+            userValid,
+            userStNumber
+        )
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, fragment)
             .commit()

@@ -113,8 +113,7 @@ class LoginActivity : AppCompatActivity() {
         doSilentSignIn(true)
     }
 
-    // Silently sign in - used if there is already a
-    // user account in the MSAL cache
+    // Silently sign in - used if there is already a user account in the MSAL cache
     private fun doSilentSignIn(shouldAttemptInteractive: Boolean) {
         mAuthHelper!!.acquireTokenSilently()
             .thenAccept { authenticationResult: IAuthenticationResult ->
@@ -192,23 +191,6 @@ class LoginActivity : AppCompatActivity() {
                 }
                 null
             }
-    }
-
-    @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
-    @SuppressLint("SimpleDateFormat")
-    fun getDateFromString(inputDate: String?): String? {
-        val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS")
-        var date: Date? = null
-        try {
-            date = simpleDateFormat.parse(inputDate)
-        } catch (e: ParseException) {
-            e.printStackTrace()
-        }
-        if (date == null) {
-            return ""
-        }
-        val convetDateFormat = SimpleDateFormat("dd-MM-yyyy")
-        return convetDateFormat.format(date)
     }
 
     private fun handleSignInFailure(exception: Throwable?) {

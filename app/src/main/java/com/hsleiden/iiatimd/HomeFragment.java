@@ -1,5 +1,7 @@
 package com.hsleiden.iiatimd;
 
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +13,17 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.Writer;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.oned.Code128Writer;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+
+import java.util.Hashtable;
 
 public class HomeFragment extends Fragment {
 
@@ -29,7 +42,7 @@ public class HomeFragment extends Fragment {
     public static HomeFragment createInstance(String userName, String userBirthday, String userEducation, String userValid, String userStNumber) {
         HomeFragment fragment = new HomeFragment();
 
-        // Add the provided username to the fragment's arguments
+        // Add the provided details to the fragment's arguments
         Bundle args = new Bundle();
         args.putString(USER_NAME, userName);
         args.putString(USER_BIRTHDAY, userBirthday);
@@ -58,6 +71,7 @@ public class HomeFragment extends Fragment {
         View homeView = inflater.inflate(R.layout.fragment_home, container, false);
 
         ImageView myCardImage = homeView.findViewById(R.id.myCardImage);
+        ImageView myBarcode = homeView.findViewById(R.id.myBarcode);
         TextView userName = homeView.findViewById(R.id.userName);
         TextView userBirthday = homeView.findViewById(R.id.userBirthday);
         TextView userEducation = homeView.findViewById(R.id.userEducation);
@@ -83,6 +97,26 @@ public class HomeFragment extends Fragment {
         userEducation.startAnimation(scaleDetails);
         userValid.startAnimation(scaleDetails);
         userStNumber.startAnimation(scaleDetails);
+
+        Hashtable<EncodeHintType, ErrorCorrectionLevel> hintMap = new Hashtable<>();
+        hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
+        Writer codeWriter;
+        codeWriter = new Code128Writer();
+        BitMatrix byteMatrix = null;
+        try {
+            byteMatrix = codeWriter.encode(mUserStNumber, BarcodeFormat.CODE_128,800, 150, hintMap);
+        } catch (WriterException e) {
+            e.printStackTrace();
+        }
+        int width = byteMatrix.getWidth();
+        int height = byteMatrix.getHeight();
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                bitmap.setPixel(i, j, byteMatrix.get(i, j) ? Color.BLACK : Color.WHITE);
+            }
+        }
+        myBarcode.setImageBitmap(bitmap);
 
         return homeView;
     }

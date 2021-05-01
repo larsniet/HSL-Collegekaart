@@ -4,6 +4,8 @@ import com.microsoft.graph.authentication.IAuthenticationProvider;
 import com.microsoft.graph.models.User;
 import com.microsoft.graph.requests.GraphServiceClient;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.net.URL;
 import java.util.concurrent.CompletableFuture;
 
@@ -39,7 +41,7 @@ public class GraphHelper implements IAuthenticationProvider {
 
     @Nonnull
     @Override
-    public CompletableFuture<String> getAuthorizationTokenAsync(@Nonnull URL requestUrl) {
+    public CompletableFuture<String> getAuthorizationTokenAsync(@NotNull URL requestUrl) {
         return null;
     }
 }
