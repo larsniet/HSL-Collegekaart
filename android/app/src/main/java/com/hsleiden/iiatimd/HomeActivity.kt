@@ -37,6 +37,9 @@ class HomeActivity : AppCompatActivity() {
     private var mUserTimeZone: String? = null
     private var mAuthHelper: AuthenticationHelper? = null
 
+    private var laravelBaseUrl: String? = "http://192.168.0.218:8000/api/"
+    private var JWTAuthToken: String? = null
+
     private var sharedPrefFile: String = "mUserPreference"
     private lateinit var sharedPreferences: SharedPreferences
 
@@ -62,8 +65,6 @@ class HomeActivity : AppCompatActivity() {
 
         // Set the current signedin state and check if the user has access to HomeActivity
         setSignedInState(mIsSignedIn)
-
-//        setJWTAccessToken()
 
         // Setup visual data for the activity
         findViewById<TextView>(R.id.userStNumber).text = mUserStNumber
@@ -120,7 +121,8 @@ class HomeActivity : AppCompatActivity() {
         // Set the user details
         when {
             isSignedIn -> {
-//                setJWTAccessToken()
+                // Als de gebruiker is ingelogd, haal dan het JWT auth token van laravel op
+                getJWTAccessToken()
 
             } else -> {
                 editor.putString("mUserStNumber", "null")
@@ -131,49 +133,59 @@ class HomeActivity : AppCompatActivity() {
                 editor.putString("mUserValid", "null")
                 editor.putString("mUserTimeZone", "null")
                 editor.apply()
+                createLaravelUser()
                 startActivity(Intent(applicationContext, MainActivity::class.java))
-                finish()
+                    finish()
             }
         }
         editor.apply()
     }
 
-
-    private fun setJWTAccessToken() {
+    private fun getJWTAccessToken() {
         // Create Volley queue
         val queue = Volley.newRequestQueue(this)
 
         // Setup URL for requests
-        val loginUserURL = "http://192.168.0.159:8000/api/auth/login"
-        val createUserURL = "http://192.168.0.159:8000/api/auth/register"
+        val loginUserURL = laravelBaseUrl + "auth/login"
 
-        // Request a string response from the provided URL.
+        // Request a JWT auth token from the Laravel backend
         val loginUserReq : StringRequest =
-                object : StringRequest(Method.POST, loginUserURL,
-                    Response.Listener { response ->
-                        try {
-                            val jsonObject = JSONObject(response)
-                            Log.e("Data: ", jsonObject.toString())
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                            Log.e("Error: ", response)
-                        }
-                    },
-                    Response.ErrorListener { error ->
-                        Log.d("API", "error => $error")
+            object : StringRequest(Method.POST, loginUserURL,
+                Response.Listener { response ->
+                    try {
+                        val jsonObject = JSONObject(response)
+                        JWTAuthToken = jsonObject.get("access_token").toString()
+                        Log.i("JWT Auth Token ", JWTAuthToken!!)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        Log.e("Error: ", response)
                     }
-                ){
-                    override fun getParams(): Map<String, String> {
-                        val params: MutableMap<String, String> = HashMap()
-                        params["name"] = "Lars"
-                        params["email"] = "lvdnbusiness@gmail.com"
-                        params["password"] = "password"
-                        params["password_confirmation"] = "password"
-                        return params
-                    }
+                },
+                Response.ErrorListener { error ->
+                    Log.d("API", "error => $error")
                 }
+            ){
+                override fun getParams(): Map<String, String> {
+                    val params: MutableMap<String, String> = HashMap()
+                    params["name"] = mUserName.toString()
+                    params["email"] = mUserEmail.toString()
+                    params["password"] = mUserStNumber.toString()
+                    params["password_confirmation"] = mUserStNumber.toString()
+                    return params
+                }
+            }
         queue.add(loginUserReq)
+    }
 
+
+    private fun createLaravelUser() {
+        // Create Volley queue
+        val queue = Volley.newRequestQueue(this)
+
+        // Setup URL for requests
+        val createUserURL = laravelBaseUrl + "auth/register"
+
+        // Create new user in Laravel backend with data from MSAL
         val createUserReq : StringRequest =
                 object : StringRequest(Method.POST, createUserURL,
                     Response.Listener { response ->
@@ -191,10 +203,10 @@ class HomeActivity : AppCompatActivity() {
                 ){
                     override fun getParams(): Map<String, String> {
                         val params: MutableMap<String, String> = HashMap()
-                        params["name"] = "Lars"
-                        params["email"] = "lvdnbusiness@gmail.com"
-                        params["password"] = "password"
-                        params["password_confirmation"] = "password"
+                        params["name"] = mUserName.toString()
+                        params["email"] = mUserEmail.toString()
+                        params["password"] = mUserStNumber.toString()
+                        params["password_confirmation"] = mUserStNumber.toString()
                         return params
                     }
                 }
@@ -235,7 +247,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     // Sign user out
-    fun signOut() {
+    private fun signOut() {
         mAuthHelper!!.signOut()
         setSignedInState(false)
     }
