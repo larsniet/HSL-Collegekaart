@@ -13,7 +13,7 @@ Deze repository bestaat uit 2 onderdelen. De backend (gebouwd in Laravel) en de 
 
 ## :calling: Installatie
 
-Gebruik [git](https://github.com/git/git) om deze applicaties te downloaden.
+Gebruik [git](https://github.com/git/git) om deze repository te clonen.
 
 ```bash
 git clone https://github.com/larsniet/HSL-Collegekaart.git
