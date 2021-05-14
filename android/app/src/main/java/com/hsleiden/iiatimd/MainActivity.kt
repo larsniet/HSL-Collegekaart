@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
                         OnboardingItem(
                                 onboardingImage = R.drawable.card,
                                 title = "Collegekaart synchroniseren",
-                                description = "Door simpelweg je collegekaart tegen je telefoon aan te houden kan je hem gemakkelijk aan je account toevoegen."
+                                description = "Door simpelweg in te loggen met jouw Hogeschool account kan je gemakkelijk je collegekaart toevoegen."
                         ),
                         OnboardingItem(
                                 onboardingImage = R.drawable.mobile_login,
