@@ -1,0 +1,16 @@
+{
+  "client_id" : "{your-client-id}",
+  "redirect_uri" : "msauth://{your-redirect-uri}",
+  "broker_redirect_uri_registered": false,          // Just for this app, might be different for you
+  "account_mode": "SINGLE",                         // Just for this app, might be different for you
+  "authorities" : [
+    {
+      "type": "AAD",                                // Just for this app, might be different for you
+      "audience": {
+        "type": "AzureADMyOrg",                     // Just for this app, might be different for you
+        "tenant_id": "{your-tenant-uri}"
+      },
+      "default": true                               // Just for this app, might be different for you
+    }
+  ]
+}
