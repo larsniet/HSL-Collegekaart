@@ -49,12 +49,12 @@ class MainActivity : AppCompatActivity() {
                         OnboardingItem(
                                 onboardingImage = R.drawable.card,
                                 title = "Collegekaart synchroniseren",
-                                description = "Door simpelweg in te loggen met jouw Hogeschool account kan je gemakkelijk je collegekaart toevoegen."
+                                description = "Met een paar knoppen kan je je eigen collegekaart toevoegen en overal gebruiken waar je hem ook maar nodig hebt."
                         ),
                         OnboardingItem(
                                 onboardingImage = R.drawable.mobile_login,
                                 title = "Hogeschool account koppelen",
-                                description = "Dit systeem is gekoppeld aan dat van de Hogeschool Leiden, waardoor je slechts met een paar knoppen kan inloggen."
+                                description = "Dit systeem is gekoppeld aan dat van de Hogeschool Leiden, waardoor inloggen super snel is."
                         ),
                         OnboardingItem(
                                 onboardingImage = R.drawable.secure_server,
