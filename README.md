@@ -20,7 +20,7 @@ Gebruik [git](https://github.com/git/git) om deze repository te clonen.
 git clone https://github.com/larsniet/HSL-Collegekaart.git
 ```
 
-### Opzetten van Laravel omgeving
+### Opzetten van de Laravel omgeving
 
 Bij het opzetten van de Laravel omgeving ga ik ervan uit dat de benodigde software geïnstalleerd is op de host. Denk hierbij bijvoorbeeld aan Composer, PHP en MySQL.
 
