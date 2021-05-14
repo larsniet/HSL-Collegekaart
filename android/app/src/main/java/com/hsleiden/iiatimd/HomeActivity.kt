@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -40,7 +39,7 @@ class HomeActivity : AppCompatActivity() {
     private var sharedPrefFile: String = "mUserPreference"
     private lateinit var sharedPreferences: SharedPreferences
 
-    private var onProfileFragment: Boolean = false
+    private var onSettingsFragment: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,12 +79,12 @@ class HomeActivity : AppCompatActivity() {
                             mUserValid,
                             mUserStNumber
                         )
-                        setContent("Collegekaart", R.drawable.ic_menu_card, false)
+                        setContent(false)
                         true
                     }
-                    R.id.menu_profile -> {
+                    R.id.menu_settings -> {
                         openProfileFragment(mUserName)
-                        setContent("Mijn Profiel", R.drawable.ic_menu_user, true)
+                        setContent(true)
                         true
                     }
                     else -> false
@@ -196,7 +195,7 @@ class HomeActivity : AppCompatActivity() {
 
     // Load the "Profile" fragment
     private fun openProfileFragment(userName: String?) {
-        val fragment = ProfileFragment.createInstance(userName)
+        val fragment = SettingsFragment.createInstance(userName)
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, fragment)
             .commit()
@@ -229,7 +228,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     // Update current page title and icon
-    private fun setContent(content: String, icon: Int, goToProfileFragment: Boolean) {
+    private fun setContent(goToSettingsFragment: Boolean) {
 
         val currentPageIcon = findViewById<ImageView>(R.id.currentPageIcon)
         val currentPageTitle = findViewById<TextView>(R.id.currentPageTitle)
@@ -237,10 +236,10 @@ class HomeActivity : AppCompatActivity() {
         val userStNumber = findViewById<TextView>(R.id.userStNumber)
         val stNumberIcon = findViewById<ImageView>(R.id.stNumberIcon)
 
-        if (goToProfileFragment) {
+        if (goToSettingsFragment) {
 
             // Set currently on profile fragment to true
-            onProfileFragment = true
+            onSettingsFragment = true
 
             // Execute animations
             currentPageIcon.animate().translationX(-1000F).duration = 500
@@ -259,7 +258,7 @@ class HomeActivity : AppCompatActivity() {
         } else {
 
             // Reset to default position if the user came from the profile fragment
-            if (onProfileFragment) {
+            if (onSettingsFragment) {
                 logoHeader.animate().translationY(0F).duration = 500
                 userStNumber.animate().translationX(0F).duration = 500
                 stNumberIcon.animate().translationX(0F).duration = 500
@@ -275,7 +274,7 @@ class HomeActivity : AppCompatActivity() {
                     logoHeader.setBackgroundResource(R.drawable.header_shadow)
                 }, 600)
             }
-            onProfileFragment = false
+            onSettingsFragment = false
 
 
         }
