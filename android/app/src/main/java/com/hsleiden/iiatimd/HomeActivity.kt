@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.View
 import android.view.animation.Animation
 import android.view.animation.Animation.AnimationListener
 import android.view.animation.AnimationUtils
@@ -40,6 +41,7 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var sharedPreferences: SharedPreferences
 
     private var onSettingsFragment: Boolean = false
+    private var firstLoad: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -90,6 +92,12 @@ class HomeActivity : AppCompatActivity() {
                     else -> false
                 }
             }
+
+        // Listen to logout click in top navigation on settings page
+        findViewById<ImageView>(R.id.logoutButton)
+            .setOnClickListener {
+                signOut()
+            };
 
         // Get the authentication helper
         AuthenticationHelper.getInstance(applicationContext)
@@ -219,6 +227,11 @@ class HomeActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, fragment)
             .commit()
+        if (firstLoad) {
+            val logoutButtonIcon = findViewById<ImageView>(R.id.logoutButton)
+            logoutButtonIcon.animate().translationX(1000F).duration = 0
+            firstLoad = false
+        }
     }
 
     // Sign user out
@@ -235,6 +248,7 @@ class HomeActivity : AppCompatActivity() {
         val logoHeader = findViewById<ImageView>(R.id.logoHeader)
         val userStNumber = findViewById<TextView>(R.id.userStNumber)
         val stNumberIcon = findViewById<ImageView>(R.id.stNumberIcon)
+        val logoutButtonIcon = findViewById<ImageView>(R.id.logoutButton)
 
         if (goToSettingsFragment) {
 
@@ -246,6 +260,7 @@ class HomeActivity : AppCompatActivity() {
             currentPageTitle.animate().translationX(-1000F).duration = 500
             userStNumber.animate().translationX(1000F).duration = 500
             stNumberIcon.animate().translationX(1000F).duration = 500
+            logoutButtonIcon.animate().translationX(0F).duration = 500
             logoHeader.animate().translationY(-220F).duration = 500
             imageViewAnimatedChange(
                 applicationContext, logoHeader, BitmapFactory.decodeResource(
@@ -263,6 +278,7 @@ class HomeActivity : AppCompatActivity() {
                 userStNumber.animate().translationX(0F).duration = 500
                 stNumberIcon.animate().translationX(0F).duration = 500
                 currentPageIcon.animate().translationX(0F).duration = 500
+                logoutButtonIcon.animate().translationX(1000F).duration = 500
                 currentPageTitle.animate().translationX(0F).duration = 500
                 imageViewAnimatedChange(
                     applicationContext, logoHeader, BitmapFactory.decodeResource(
