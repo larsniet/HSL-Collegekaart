@@ -7,40 +7,87 @@
 
     <LinearLayout
         android:id="@+id/settings_layout"
-        android:layout_width="match_parent"
-        android:layout_height="500dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="130dp"
+        android:paddingVertical="20dp"
         android:layout_centerInParent="true"
         android:orientation="vertical"
         android:background="@drawable/card_layout"
         tools:ignore="UselessParent">
 
         <TextView
-            android:id="@+id/home_page_username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="Niet Ingelogd"
-            android:textSize="30sp" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/buttonLogout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingStart="40dp"
-            android:paddingEnd="40dp"
-            android:text="Uitloggen"
-            android:textAllCaps="false"
-            android:textSize="14sp"
+            android:textSize="19sp"
+            android:text="Mijn Gegevens"
             android:textStyle="bold"
-            android:backgroundTint="@color/custom_color_secondary"
-            android:layout_gravity="center"
-            app:cornerRadius="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginBottom="10dp"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/custom_color_secondary"
+            android:textAlignment="center" />
+
+        <TextView
+            android:id="@+id/settings_userName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="17sp"
+            android:textAlignment="center"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginHorizontal="15dp"
+            android:textColor="@color/custom_color_primary"
+            android:layout_marginBottom="5dp"
+            android:text="P. (Piet) Henksema"
             />
+
+        <TextView
+            android:id="@+id/settings_userEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="17sp"
+            android:textAlignment="center"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginHorizontal="15dp"
+            android:textColor="@color/custom_color_primary"
+            android:layout_marginBottom="5dp"
+            android:text="s1112345@student.hsleiden.nl"
+            />
+
+        <TextView
+            android:id="@+id/settings_stNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="17sp"
+            android:textAlignment="center"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginHorizontal="15dp"
+            android:textColor="@color/custom_color_primary"
+            android:layout_marginBottom="20dp"
+            android:text="1112345"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="17sp"
+            android:text="Disclaimer"
+            android:textStyle="bold"
+            android:layout_marginBottom="10dp"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/custom_color_secondary"
+            android:textAlignment="center" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textAlignment="center"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginHorizontal="15dp"
+            android:text="Deze applicatie is gebouwd aan de hand van de modulehandleiding met betrekking tot het vak IIATIMD (opleiding Informatica). Behalve de opzet voor Android en Laravel zelf, is de code door Lars van der Niet bedacht of geïmplementeerd. Het gebruik van de MSAL authenticatie geeft deze app geen toegang tot de volledige gegevens van studenten, maar alleen de naam, e-mail en studentnummer. Andere gegevens worden dus ook NIET verwerkt."
+            />
+
 
     </LinearLayout>
 

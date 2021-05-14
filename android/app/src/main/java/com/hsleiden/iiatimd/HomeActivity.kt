@@ -85,7 +85,7 @@ class HomeActivity : AppCompatActivity() {
                         true
                     }
                     R.id.menu_settings -> {
-                        openProfileFragment(mUserName)
+                        openSettingsFragment(mUserName, mUserEmail, mUserStNumber)
                         setContent(true)
                         true
                     }
@@ -201,9 +201,9 @@ class HomeActivity : AppCompatActivity() {
         queue.add(createUserReq)
     }
 
-    // Load the "Profile" fragment
-    private fun openProfileFragment(userName: String?) {
-        val fragment = SettingsFragment.createInstance(userName)
+    // Load the "Settings" fragment
+    private fun openSettingsFragment(userName: String?, userEmail: String?, userStNumber: String?) {
+        val fragment = SettingsFragment.createInstance(userName, userEmail, userStNumber)
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, fragment)
             .commit()
