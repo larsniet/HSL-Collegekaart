@@ -120,8 +120,7 @@ class HomeActivity : AppCompatActivity() {
             .setTitle("Uitloggen")
             .setMessage("Weet je zeker dat je uit wilt loggen?")
             .setPositiveButton("Ja") { dialog, which ->
-                Toast.makeText(applicationContext,
-                    "Ja", Toast.LENGTH_SHORT).show()
+                signOut()
             }
             .setNegativeButton("Nee", null)
             .show()
