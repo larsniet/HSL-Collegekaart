@@ -1,5 +1,14 @@
-name: Android CI
-on: [push]
+name: Android
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+    
+defaults:
+  run:
+    working-directory: ./android
 
 jobs:
   test:
