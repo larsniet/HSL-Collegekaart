@@ -36,7 +36,16 @@ php artisan jwt:secret # Maakt JWT secret aan
 
 ## Opzetten van de Android applicatie
 
-Open de **android** map in Android Studio. Wacht tot het downloaden van de dependencies en het builden van de gradle files compleet is. Navigeer naar **HSL-Collegekaart\android\app\src\main\res\raw**, hier staat een MSAL-config bestand in als voorbeeld. Om te voorkomen dat iedereen zomaar toegang heeft tot de inlogmethode van de Hogeschool Leiden wordt het werkende bestand met gevoelige gegevens niet meegestuurd. Vul alle gegevens in zoals ze in de example MSAL-config (maar dan met je eigen gegevens) staan en vernoem het bestand naar **msal_config.json**. Sla vervolgens het stukje vanaf de laatste '/' van de redirect_uri op, deze heb je nodig voor het bestand **AndroidManifest.xml**. Navigeer naar **HSL-Collegekaart\android\app\src\main\AndroidManifest.xml** en ga op zoek naar de data reference (er is er maar 1). Vul bij **android:path** het laatste stukje van de redirect_uri in. Voor meer uitleg, zie de documentatie van [MSAL](https://docs.microsoft.com/nl-nl/azure/active-directory/develop/msal-configuration). Vervolgens kies je een emulator/fysiek apparaat en kan je de app runnen. 
+- Open de **android** map in Android Studio. 
+- Wacht tot het downloaden van de dependencies en het builden van de gradle files compleet is. 
+- Navigeer naar **HSL-Collegekaart\android\app\src\main\res\raw**, hier staat een MSAL-config bestand in als voorbeeld. Om te voorkomen dat iedereen zomaar toegang heeft tot de inlogmethode van de Hogeschool Leiden wordt het werkende bestand met gevoelige gegevens niet meegestuurd. Vul alle gegevens in zoals ze in de example MSAL-config (maar dan met je eigen gegevens) staan en vernoem het bestand naar **msal_config.json**. 
+- Sla vervolgens het stukje vanaf de laatste '/' van de redirect_uri op, deze heb je nodig voor het bestand **AndroidManifest.xml**. 
+- Navigeer naar **HSL-Collegekaart\android\app\src\main\AndroidManifest.xml** en ga op zoek naar de data reference (er is er maar 1). 
+- Vul bij **android:path** het laatste stukje van de redirect_uri in.
+- In verband met problemen door lokale hosting moet het bestand **HSL-Collegekaart\android\app\src\main\res\xml\network_security_config.xml** gevuld worden met het ip-adres van de host, anders kan de Android applicatie geen verbinding maken met de (lokale) Laravel applicatie.
+- Vervolgens kies je een emulator/fysiek apparaat en kan je de app runnen. 
+
+Voor meer uitleg, zie de documentatie van [MSAL](https://docs.microsoft.com/nl-nl/azure/active-directory/develop/msal-configuration). 
 
 ## Bijdragen
 Pull requests zijn welkom. Voor grote verandering, open eerst een issue om de gewenste veranderingen te bespreken.
