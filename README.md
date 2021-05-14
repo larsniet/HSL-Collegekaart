@@ -30,7 +30,7 @@ cd ./HSL-Collegekaart/laravel
 composer install # Installeerd alle dependencies
 php artisan key:generate # Maakt unieke key aan in het .env bestand
 php aritsan migrate:fresh --seed # Haalt de database die is ingevoerd in het .env bestand leeg en vult deze met de benodigde data
-php artisan serve # Start de laravel applicatie lokaal
+php artisan serve --host={host ip-adres} # Start de laravel applicatie lokaal
 php artisan jwt:secret # Maakt JWT secret aan
 ```
 
