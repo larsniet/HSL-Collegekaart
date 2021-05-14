@@ -3,15 +3,12 @@ package com.hsleiden.iiatimd;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.OvershootInterpolator;
-import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -21,21 +18,27 @@ import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link ProfileFragment#createInstance(String)} factory method to
+ * Use the {@link SettingsFragment#createInstance(String)} factory method to
  * create an instance of this fragment.
  */
-public class ProfileFragment extends Fragment {
+public class SettingsFragment extends Fragment {
 
     private static final String USER_NAME = "userName";
+    private static final String USER_EMAIL = "userEmail";
+    private static final String USER_STNUMBER = "userStNumber";
 
     private String mUserName;
+    private String mUserEmail;
+    private String mUserStNumber;
 
-    public static ProfileFragment createInstance(String userName) {
-        ProfileFragment fragment = new ProfileFragment();
+    public static SettingsFragment createInstance(String userName, String userEmail, String userStNumber) {
+        SettingsFragment fragment = new SettingsFragment();
 
         // Add the provided username to the fragment's arguments
         Bundle args = new Bundle();
         args.putString(USER_NAME, userName);
+        args.putString(USER_EMAIL, userEmail);
+        args.putString(USER_STNUMBER, userStNumber);
         fragment.setArguments(args);
         return fragment;
     }
@@ -45,32 +48,30 @@ public class ProfileFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mUserName = getArguments().getString(USER_NAME);
+            mUserEmail = getArguments().getString(USER_EMAIL);
+            mUserStNumber = getArguments().getString(USER_STNUMBER);
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View profileView = inflater.inflate(R.layout.fragment_profile, container, false);
+        View settingsView = inflater.inflate(R.layout.fragment_settings, container, false);
 
-        Button buttonLogout = profileView.findViewById(R.id.buttonLogout);
-        LinearLayout profile_layout = profileView.findViewById(R.id.profile_layout);
-        TextView userName = profileView.findViewById(R.id.home_page_username);
+        LinearLayout settings_layout = settingsView.findViewById(R.id.settings_layout);
+        TextView userName = settingsView.findViewById(R.id.settings_userName);
+        TextView userEmail = settingsView.findViewById(R.id.settings_userEmail);
+        TextView userStNumber = settingsView.findViewById(R.id.settings_stNumber);
 
         // If there is a username, replace the "Please sign in" with the username
         if (mUserName != null) {
             userName.setText(mUserName);
-        } else {
-            buttonLogout.setVisibility(View.GONE);
+            userEmail.setText(mUserEmail);
+            userStNumber.setText(mUserStNumber);
         }
 
-        buttonLogout.setOnClickListener(v -> {
-            ((HomeActivity) Objects.requireNonNull(getActivity())).signOut();
-        });
-
         Animation fadeInBottom = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in_bottom);
-        profile_layout.startAnimation(fadeInBottom);
+        settings_layout.startAnimation(fadeInBottom);
 
-
-        return profileView;
+        return settingsView;
     }
 }

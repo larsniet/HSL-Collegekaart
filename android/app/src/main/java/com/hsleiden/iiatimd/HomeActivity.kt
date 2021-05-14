@@ -6,11 +6,11 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.View
 import android.view.animation.Animation
 import android.view.animation.Animation.AnimationListener
 import android.view.animation.AnimationUtils
@@ -40,7 +40,8 @@ class HomeActivity : AppCompatActivity() {
     private var sharedPrefFile: String = "mUserPreference"
     private lateinit var sharedPreferences: SharedPreferences
 
-    private var onProfileFragment: Boolean = false
+    private var onSettingsFragment: Boolean = false
+    private var firstLoad: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,17 +81,23 @@ class HomeActivity : AppCompatActivity() {
                             mUserValid,
                             mUserStNumber
                         )
-                        setContent("Collegekaart", R.drawable.ic_menu_card, false)
+                        setContent(false)
                         true
                     }
-                    R.id.menu_profile -> {
-                        openProfileFragment(mUserName)
-                        setContent("Mijn Profiel", R.drawable.ic_menu_user, true)
+                    R.id.menu_settings -> {
+                        openSettingsFragment(mUserName, mUserEmail, mUserStNumber)
+                        setContent(true)
                         true
                     }
                     else -> false
                 }
             }
+
+        // Listen to logout click in top navigation on settings page
+        findViewById<ImageView>(R.id.logoutButton)
+            .setOnClickListener {
+                signOut()
+            };
 
         // Get the authentication helper
         AuthenticationHelper.getInstance(applicationContext)
@@ -194,9 +201,9 @@ class HomeActivity : AppCompatActivity() {
         queue.add(createUserReq)
     }
 
-    // Load the "Profile" fragment
-    private fun openProfileFragment(userName: String?) {
-        val fragment = ProfileFragment.createInstance(userName)
+    // Load the "Settings" fragment
+    private fun openSettingsFragment(userName: String?, userEmail: String?, userStNumber: String?) {
+        val fragment = SettingsFragment.createInstance(userName, userEmail, userStNumber)
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, fragment)
             .commit()
@@ -220,6 +227,11 @@ class HomeActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, fragment)
             .commit()
+        if (firstLoad) {
+            val logoutButtonIcon = findViewById<ImageView>(R.id.logoutButton)
+            logoutButtonIcon.animate().translationX(1000F).duration = 0
+            firstLoad = false
+        }
     }
 
     // Sign user out
@@ -229,24 +241,26 @@ class HomeActivity : AppCompatActivity() {
     }
 
     // Update current page title and icon
-    private fun setContent(content: String, icon: Int, goToProfileFragment: Boolean) {
+    private fun setContent(goToSettingsFragment: Boolean) {
 
         val currentPageIcon = findViewById<ImageView>(R.id.currentPageIcon)
         val currentPageTitle = findViewById<TextView>(R.id.currentPageTitle)
         val logoHeader = findViewById<ImageView>(R.id.logoHeader)
         val userStNumber = findViewById<TextView>(R.id.userStNumber)
         val stNumberIcon = findViewById<ImageView>(R.id.stNumberIcon)
+        val logoutButtonIcon = findViewById<ImageView>(R.id.logoutButton)
 
-        if (goToProfileFragment) {
+        if (goToSettingsFragment) {
 
             // Set currently on profile fragment to true
-            onProfileFragment = true
+            onSettingsFragment = true
 
             // Execute animations
             currentPageIcon.animate().translationX(-1000F).duration = 500
             currentPageTitle.animate().translationX(-1000F).duration = 500
             userStNumber.animate().translationX(1000F).duration = 500
             stNumberIcon.animate().translationX(1000F).duration = 500
+            logoutButtonIcon.animate().translationX(0F).duration = 500
             logoHeader.animate().translationY(-220F).duration = 500
             imageViewAnimatedChange(
                 applicationContext, logoHeader, BitmapFactory.decodeResource(
@@ -259,11 +273,12 @@ class HomeActivity : AppCompatActivity() {
         } else {
 
             // Reset to default position if the user came from the profile fragment
-            if (onProfileFragment) {
+            if (onSettingsFragment) {
                 logoHeader.animate().translationY(0F).duration = 500
                 userStNumber.animate().translationX(0F).duration = 500
                 stNumberIcon.animate().translationX(0F).duration = 500
                 currentPageIcon.animate().translationX(0F).duration = 500
+                logoutButtonIcon.animate().translationX(1000F).duration = 500
                 currentPageTitle.animate().translationX(0F).duration = 500
                 imageViewAnimatedChange(
                     applicationContext, logoHeader, BitmapFactory.decodeResource(
@@ -275,7 +290,7 @@ class HomeActivity : AppCompatActivity() {
                     logoHeader.setBackgroundResource(R.drawable.header_shadow)
                 }, 600)
             }
-            onProfileFragment = false
+            onSettingsFragment = false
 
 
         }

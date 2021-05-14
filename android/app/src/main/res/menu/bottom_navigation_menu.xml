@@ -4,8 +4,8 @@
         android:title="Collegekaart"
         android:icon="@drawable/ic_menu_card"
         />
-    <item android:id="@+id/menu_profile"
-        android:title="Mijn profiel"
-        android:icon="@drawable/ic_menu_user"
+    <item android:id="@+id/menu_settings"
+        android:title="Instellingen"
+        android:icon="@drawable/ic_menu_settings"
         />
 </menu>
