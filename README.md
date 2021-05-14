@@ -36,7 +36,7 @@ php artisan jwt:secret # Maakt JWT secret aan
 
 ## Opzetten van de Android applicatie
 
-Open de **android** map in Android Studio. Wacht tot het downloaden van de dependencies en het builden van de gradle files compleet is. Vervolgens kies je een emulator/fysiek apparaat en kan je de app runnen. 
+Open de **android** map in Android Studio. Wacht tot het downloaden van de dependencies en het builden van de gradle files compleet is. Navigeer naar **HSL-Collegekaart\android\app\src\main\res\raw**, hier staat een MSAL-config bestand in als voorbeeld. Om te voorkomen dat iedereen zomaar toegang heeft tot de inlogmethode van de Hogeschool Leiden wordt het werkende bestand met gevoelige gegevens niet meegestuurd. Vul alle gegevens in zoals ze in de example MSAL-config (maar dan met je eigen gegevens) staan en vernoem het bestand naar **msal_config.json**. Voor meer uitleg, zie de documentatie van [MSAL](https://docs.microsoft.com/nl-nl/azure/active-directory/develop/msal-configuration). Vervolgens kies je een emulator/fysiek apparaat en kan je de app runnen. 
 
 ## Bijdragen
 Pull requests zijn welkom. Voor grote verandering, open eerst een issue om de gewenste veranderingen te bespreken.
