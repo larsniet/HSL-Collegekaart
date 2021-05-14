@@ -1,7 +1,9 @@
 package com.hsleiden.iiatimd
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Bitmap
@@ -10,12 +12,12 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import android.view.View
 import android.view.animation.Animation
 import android.view.animation.Animation.AnimationListener
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
@@ -97,7 +99,7 @@ class HomeActivity : AppCompatActivity() {
         // Listen to logout click in top navigation on settings page
         findViewById<ImageView>(R.id.logoutButton)
             .setOnClickListener {
-                signOut()
+                signOutDialog()
             };
 
         // Get the authentication helper
@@ -110,6 +112,19 @@ class HomeActivity : AppCompatActivity() {
                     null
                 }
 
+    }
+
+    private fun signOutDialog() {
+        AlertDialog.Builder(this)
+            .setIcon(android.R.drawable.ic_lock_power_off)
+            .setTitle("Uitloggen")
+            .setMessage("Weet je zeker dat je uit wilt loggen?")
+            .setPositiveButton("Ja") { dialog, which ->
+                Toast.makeText(applicationContext,
+                    "Ja", Toast.LENGTH_SHORT).show()
+            }
+            .setNegativeButton("Nee", null)
+            .show()
     }
 
     // Update the menu and get the user's name and email
