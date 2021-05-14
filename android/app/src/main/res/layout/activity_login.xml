@@ -49,7 +49,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:maxWidth="300dp"
-            android:text="Om een goed beeld te krijgen van wie jij bent en om te voorkomen dat je iemands identiteit steelt vragen we je in te loggen met je Hogeschool account"
+            android:text="Om een goed beeld te krijgen van wie jij bent en om te voorkomen dat anderen op jouw account in kunnen loggen, vragen we je in te loggen met je Hogeschool account."
             android:textColor="@color/custom_color_text_secondary"
             android:textSize="16sp"
             app:layout_constraintBottom_toTopOf="@+id/imageOnboarding"
