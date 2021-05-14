@@ -5,24 +5,22 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Bitmap
-import android.graphics.Color
+import android.graphics.BitmapFactory
+import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import android.view.View
+import android.view.animation.Animation
+import android.view.animation.Animation.AnimationListener
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.zxing.BarcodeFormat
-import com.google.zxing.MultiFormatWriter
-import com.google.zxing.WriterException
 import org.json.JSONObject
 import java.util.*
 
@@ -41,6 +39,8 @@ class HomeActivity : AppCompatActivity() {
 
     private var sharedPrefFile: String = "mUserPreference"
     private lateinit var sharedPreferences: SharedPreferences
+
+    private var onProfileFragment: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,12 +80,12 @@ class HomeActivity : AppCompatActivity() {
                             mUserValid,
                             mUserStNumber
                         )
-                        setContent("Collegekaart", R.drawable.ic_menu_card)
+                        setContent("Collegekaart", R.drawable.ic_menu_card, false)
                         true
                     }
                     R.id.menu_profile -> {
                         openProfileFragment(mUserName)
-                        setContent("Mijn profiel", R.drawable.ic_menu_user)
+                        setContent("Mijn Profiel", R.drawable.ic_menu_user, true)
                         true
                     }
                     else -> false
@@ -229,23 +229,77 @@ class HomeActivity : AppCompatActivity() {
     }
 
     // Update current page title and icon
-    private fun setContent(content: String, icon: Int) {
+    private fun setContent(content: String, icon: Int, goToProfileFragment: Boolean) {
 
         val currentPageIcon = findViewById<ImageView>(R.id.currentPageIcon)
         val currentPageTitle = findViewById<TextView>(R.id.currentPageTitle)
+        val logoHeader = findViewById<ImageView>(R.id.logoHeader)
+        val userStNumber = findViewById<TextView>(R.id.userStNumber)
+        val stNumberIcon = findViewById<ImageView>(R.id.stNumberIcon)
 
-        var animation = AnimationUtils.loadAnimation(this, R.anim.slide_out)
-        currentPageIcon.startAnimation(animation)
-        currentPageTitle.startAnimation(animation)
-        Handler(Looper.getMainLooper()).postDelayed({
-            currentPageTitle.text = content
-            currentPageIcon.setImageDrawable(ContextCompat.getDrawable(applicationContext, icon))
+        if (goToProfileFragment) {
 
-            animation = AnimationUtils.loadAnimation(this, R.anim.slide_in)
-            currentPageIcon.startAnimation(animation)
-            currentPageTitle.startAnimation(animation)
+            // Set currently on profile fragment to true
+            onProfileFragment = true
 
-        }, 500)
+            // Execute animations
+            currentPageIcon.animate().translationX(-1000F).duration = 500
+            currentPageTitle.animate().translationX(-1000F).duration = 500
+            userStNumber.animate().translationX(1000F).duration = 500
+            stNumberIcon.animate().translationX(1000F).duration = 500
+            logoHeader.animate().translationY(-220F).duration = 500
+            imageViewAnimatedChange(
+                applicationContext, logoHeader, BitmapFactory.decodeResource(
+                    applicationContext.resources,
+                    R.drawable.logo_transparent
+                )
+            )
+            logoHeader.setBackgroundResource(0)
+
+        } else {
+
+            // Reset to default position if the user came from the profile fragment
+            if (onProfileFragment) {
+                logoHeader.animate().translationY(0F).duration = 500
+                userStNumber.animate().translationX(0F).duration = 500
+                stNumberIcon.animate().translationX(0F).duration = 500
+                currentPageIcon.animate().translationX(0F).duration = 500
+                currentPageTitle.animate().translationX(0F).duration = 500
+                imageViewAnimatedChange(
+                    applicationContext, logoHeader, BitmapFactory.decodeResource(
+                        applicationContext.resources,
+                        R.drawable.logo_header
+                    )
+                )
+                Handler(Looper.getMainLooper()).postDelayed({
+                    logoHeader.setBackgroundResource(R.drawable.header_shadow)
+                }, 600)
+            }
+            onProfileFragment = false
+
+
+        }
+
+
+    }
+
+    private fun imageViewAnimatedChange(c: Context?, v: ImageView, new_image: Bitmap?) {
+        val animOut = AnimationUtils.loadAnimation(c, android.R.anim.fade_out)
+        val animIn = AnimationUtils.loadAnimation(c, android.R.anim.fade_in)
+        animOut.setAnimationListener(object : AnimationListener {
+            override fun onAnimationStart(animation: Animation) {}
+            override fun onAnimationRepeat(animation: Animation) {}
+            override fun onAnimationEnd(animation: Animation) {
+                v.setImageBitmap(new_image)
+                animIn.setAnimationListener(object : AnimationListener {
+                    override fun onAnimationStart(animation: Animation) {}
+                    override fun onAnimationRepeat(animation: Animation) {}
+                    override fun onAnimationEnd(animation: Animation) {}
+                })
+                v.startAnimation(animIn)
+            }
+        })
+        v.startAnimation(animOut)
     }
 
 }

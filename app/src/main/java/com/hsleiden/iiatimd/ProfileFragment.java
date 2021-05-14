@@ -8,10 +8,13 @@ import androidx.fragment.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.animation.OvershootInterpolator;
 import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.Objects;
@@ -50,6 +53,7 @@ public class ProfileFragment extends Fragment {
         View profileView = inflater.inflate(R.layout.fragment_profile, container, false);
 
         Button buttonLogout = profileView.findViewById(R.id.buttonLogout);
+        LinearLayout profile_layout = profileView.findViewById(R.id.profile_layout);
         TextView userName = profileView.findViewById(R.id.home_page_username);
 
         // If there is a username, replace the "Please sign in" with the username
@@ -62,6 +66,9 @@ public class ProfileFragment extends Fragment {
         buttonLogout.setOnClickListener(v -> {
             ((HomeActivity) Objects.requireNonNull(getActivity())).signOut();
         });
+
+        Animation fadeInBottom = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in_bottom);
+        profile_layout.startAnimation(fadeInBottom);
 
 
         return profileView;
