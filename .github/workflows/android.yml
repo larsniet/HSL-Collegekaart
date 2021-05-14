@@ -1,4 +1,4 @@
-name: Android
+name: Android Tests
 
 on:
   push:
