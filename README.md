@@ -49,7 +49,7 @@ php artisan jwt:secret # Maakt JWT secret aan
 Voor meer uitleg, zie de documentatie van [MSAL](https://docs.microsoft.com/nl-nl/azure/active-directory/develop/msal-configuration). 
 
 ## :hearts: Bijdragen
-Pull requests zijn welkom. Voor grote verandering, open eerst een issue om de gewenste veranderingen te bespreken.
+Pull requests zijn welkom. Voor grote veranderingen, open eerst een issue om ze te bespreken.
 
 ## :copyright: License
 [GNU GPLv3](https://choosealicense.com/licenses/gpl-3.0/)
